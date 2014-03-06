@@ -158,9 +158,9 @@ class AuthBehavior extends CBehavior
         $parents = $this->getParents($itemName);
         if(empty($parents)){
             $parents = $this->owner->db->createCommand()
-                ->select('parent')
+                ->select($this->owner->parentAuthItemChild)
                 ->from($this->owner->itemChildTable)
-                ->where('child=:child', array(':child'=>$itemName))
+                ->where($this->owner->childAuthItemChild . '=:child', array(':child'=>$itemName))
                 ->queryColumn();
             $this->setItemParents($itemName, $parents);
         }
@@ -199,9 +199,9 @@ class AuthBehavior extends CBehavior
         $children = $this->getChildren($itemName);
         if(empty($children)){
             $children = $this->owner->db->createCommand()
-                ->select('child')
+                ->select($this->owner->childAuthItemChild)
                 ->from($this->owner->itemChildTable)
-                ->where('parent=:parent', array(':parent'=>$itemName))
+                ->where($this->owner->parentAuthItemChild . '=:parent', array(':parent'=>$itemName))
                 ->queryColumn();
             $this->setItemChildren($itemName, $children);
         }
